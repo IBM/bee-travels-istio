@@ -1,0 +1,22 @@
+config:
+  target: "http://169.44.162.114"
+  phases:
+    - duration: 30
+      arrivalRate: 5
+  processor: "./artillery.js"
+scenarios:
+  - name: "destination"
+    flow:
+    - function: "getDestination"
+    - get:
+        url: "/api/v1/destinations/{{ country }}/{{ city }}"
+  - name: "hotel"
+    flow:
+    - function: "getDestination"
+    - get:
+        url: "/api/v1/hotels/{{ country }}/{{ city }}?dateFrom=2020-07-23&dateTo=2020-07-25"
+  - name: "carrental"
+    flow:
+    - function: "getDestination"
+    - get:
+        url: "/api/v1/cars/{{ country }}/{{ city }}?dateFrom=2020-07-23&dateTo=2020-07-25"
