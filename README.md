@@ -2,14 +2,15 @@
 <!-- Change the repo -->
 [![Build Status](https://travis-ci.org/IBM/watson-banking-chatbot.svg?branch=master)](https://travis-ci.org/IBM/watson-banking-chatbot)
 
-# Building an Istio 1.6 Service Mesh for Bee Travels, a Microservice Application Deployed on Kubernetes
+# Building an Istio 1.6 Service Mesh for Bee Travels, a Microservices Based Application Deployed on Kubernetes
 
-In this code pattern, we will deploy a microservices application to the cloud with Kubernetes and create a service mesh with Istio 1.6. 
+In this code pattern, we will deploy a microservices based application to  IBM Kubernetes Service and create a service mesh with Istio 1.6. 
 
 When you have completed this code pattern, you will understand how to:
 
-* Deploy microservices application on Kubernetes
-* Configure an Istio service mesh
+* Deploy a microservices application on Kubernetes
+* Configure an Istio service mesh, including:
+  * Install and configure the IBM Managed Istio add-on
   * Route traffic to specific microservice versions
   * Shift traffic between multiple microservice versions (A/B testing)
   * Access distributed trace spans through Jaeger
@@ -99,12 +100,12 @@ When you have completed this code pattern, you will understand how to:
    <cluster_name>/<cluster_id>
    ```
 
-4. Enable Istio sidecar injections.
+4. Enable automatic Istio sidecar injection.
    ```
    $ kubectl label namespace default istio-injection=enabled
    ```
 
-### Deploy version 1 (data stored locally)
+### Deploy version 1 (data stored in json flat files)
 
 1. Navigate to the `bee-travels-istio` root directory and deploy the application with version 1 services:
    ```
@@ -135,8 +136,8 @@ When you have completed this code pattern, you will understand how to:
    $ ./generate.sh
    ```
 
-5. Answer the prompts as seen below. For the **Database Connection URL**, replace `EXNTERNAL-IP` with the IP address from step 4. Repeat this step for the car and hotel services.
-   > NOTE: This code pattern will not use the flight service.
+5. Answer the prompts as seen below. For the **Database Connection URL**, replace `EXTERNAL-IP` with the IP address from step 4. Repeat this step for the car and hotel services.
+   > NOTE: This code pattern will not use the flights service.
    ```
    Welcome to the Bee Travels Data Generating Script
    Please answer the following options to configure your data:
@@ -263,6 +264,7 @@ kubectl get svc
    ```
 
 5. Generate traffic to the application using the Artillery script.
+   > Before running, ensure that you have updated the `artillery.yaml` file with the correct IP address for your cluster, as described above.
    ```
    $ artillery run artillery_load/artillery.yaml
    ```
@@ -366,7 +368,7 @@ kubectl get svc
    ```
 
 <!-- SCREENSHOT -->
-2. Navigate to the application in the browser, enter a destination, and make a car rental request.
+2. In a different browser tab, navigate to the Bee Travels application, enter a destination, and make a car rental request.
 ![car](readme_images/car.png)
 
 <!-- SCREENSHOT -->
