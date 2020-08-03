@@ -1,8 +1,9 @@
 config:
-  target: "http://169.44.162.114"
+  # target: "http://EXTERNAL-IP"
+  target: "http://169.62.94.60"
   phases:
-    - duration: 30
-      arrivalRate: 5
+    - duration: 10
+      arrivalRate: 20
   processor: "./artillery.js"
 scenarios:
   - name: "destination"
