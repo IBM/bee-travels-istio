@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  destination-v1
+  labels:
+    app:  destination
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  destination
+      version: v1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  destination
+        version: v1
+    spec:
+      containers:
+      - image:  moficodes/destination-v1:v1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9001
+        name:  destination
+        env:
+          - name: PORT
+            value: "9001"
+          - name: HOST_IP
+            value: destination
+          - name: SCHEME
+            value: http
+          - name: LOG_LEVEL
+            value: info
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 500m
+            memory: 1024Mi
+      restartPolicy: Always
+      

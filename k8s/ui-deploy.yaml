@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  bee-ui
+  labels:
+    app:  bee-ui
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  bee-ui
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  bee-ui
+        version: v1
+    spec:
+      containers:
+      - image:  moficodes/bee-ui:v1.0.0
+        imagePullPolicy: Always
+        name:  bee-ui
+        env:
+          - name: PORT
+            value: "9000"
+          - name: NODE_ENV
+            value: production
+          - name: DESTINATION_URL
+            value: http://destination:80
+          - name: CAR_URL
+            value: http://carrental:80
+          - name: HOTEL_URL
+            value: http://hotel:80
+          - name: CURRENCY_EXCHANGE_URL
+            value: http://currencyexchange:80
+        resources:
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+      restartPolicy: Always

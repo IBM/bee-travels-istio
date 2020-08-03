@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  destination-v3
+  labels:
+    app:  destination
+    version: v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  destination
+      version: v3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  destination
+        version: v3
+    spec:
+      containers:
+      - image:  beetravels/destination-v2:node-03e4a69a09bdc56ca9676af9355fbf204b48db31
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9001
+        name:  destination
+        env:
+          - name: PORT
+            value: "9001"
+          - name: HOST_IP
+            value: destination
+          - name: SCHEME
+            value: http
+          - name: DATABASE
+            value: mongodb
+          - name: MONGO_CONNECTION_URL
+            value: mongodb://admin:adminadmin1@059d7ac6-942a-4f24-b2c4-9fd7d0b94865-0.4b2136ddd30a46e9b7bdb2b2db7f8cd0.databases.appdomain.cloud:31653,059d7ac6-942a-4f24-b2c4-9fd7d0b94865-1.4b2136ddd30a46e9b7bdb2b2db7f8cd0.databases.appdomain.cloud:31653/ibmclouddb?authSource=admin&replicaSet=replset&tls=true
+          - name: COUCH_CLOUDANT_CONNECTION_URL
+            value: http://admin:admin@couch:5984
+          - name: PG_HOST
+            value: bee-travels-db-postgresql
+          - name: PG_USER
+            value: postgres
+          - name: PG_PASSWORD
+            value: Oyg9YxwKmm
+          - name: DATABASE_CERT
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: dbsecret
+        resources:
+          limits:
+            cpu: 500m
+            memory: 1024Mi
+          requests:
+            cpu: 500m
+            memory: 1024Mi
+      restartPolicy: Always
+      

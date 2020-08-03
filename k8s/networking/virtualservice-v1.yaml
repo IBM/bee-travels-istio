@@ -1,0 +1,52 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: carrental-v1
+spec:
+  hosts:
+    - carrental
+  http:
+  - route:
+    - destination:
+        host: carrental
+        subset: v1
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: destination-v1
+spec:
+  hosts:
+    - destination
+  http:
+  - route:
+    - destination:
+        host: destination
+        subset: v1
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: hotel-v1
+spec:
+  hosts:
+    - hotel
+  http:
+  - route:
+    - destination:
+        host: hotel
+        subset: v1
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: currencyexchange
+spec:
+  hosts:
+  - currencyexchange
+  http:
+  - route:
+    - destination:
+        host: currencyexchange
+        subset: v1
+---

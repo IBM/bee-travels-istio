@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  currencyexchange
+  labels:
+    app: currencyexchange
+spec:
+  selector:
+    app:  currencyexchange
+  type:  ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    name: http
+    targetPort:  9201
