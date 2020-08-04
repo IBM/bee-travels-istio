@@ -27,11 +27,11 @@ When you have completed this code pattern, you will understand how to:
 <!--Optionally, add flow steps based on the architecture diagram-->
 ## Flow
 
-1. Step 1.
+<!-- 1. Step 1.
 2. Step 2.
 3. Step 3.
 4. Step 4.
-5. Step 5.
+5. Step 5. -->
 
 # Prerequisites
 
