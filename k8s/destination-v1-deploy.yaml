@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  destination-v1
+  name: destination-v1
   labels:
-    app:  destination
+    app: destination
     version: v1
 spec:
   replicas: 1
@@ -23,11 +23,11 @@ spec:
         version: v1
     spec:
       containers:
-      - image:  moficodes/destination-v1:v1.0.0
+      - image: beetravels/destination-v1:node-v1.0.2
         imagePullPolicy: Always
         ports:
         - containerPort: 9001
-        name:  destination
+        name: destination
         env:
           - name: PORT
             value: "9001"
@@ -39,10 +39,10 @@ spec:
             value: info
         resources:
           limits:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 256Mi
           requests:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 256Mi
       restartPolicy: Always
       

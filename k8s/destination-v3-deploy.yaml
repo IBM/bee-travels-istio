@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  destination-v3
+  name: destination-v3
   labels:
-    app:  destination
+    app: destination
     version: v3
 spec:
   replicas: 1
@@ -23,11 +23,11 @@ spec:
         version: v3
     spec:
       containers:
-      - image:  beetravels/destination-v2:node-03e4a69a09bdc56ca9676af9355fbf204b48db31
+      - image: beetravels/destination-v2:node-v1.0.2
         imagePullPolicy: Always
         ports:
         - containerPort: 9001
-        name:  destination
+        name: destination
         env:
           - name: PORT
             value: "9001"
@@ -47,6 +47,8 @@ spec:
             value: postgres
           - name: PG_PASSWORD
             value: Oyg9YxwKmm
+          - name: SERVICE
+            value: destination-v3
           - name: DATABASE_CERT
             valueFrom:
               secretKeyRef:
@@ -54,10 +56,10 @@ spec:
                 key: dbsecret
         resources:
           limits:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 400Mi
           requests:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 400Mi
       restartPolicy: Always
       

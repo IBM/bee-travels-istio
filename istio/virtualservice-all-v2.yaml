@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: carrental-v1
+  name: carrental
 spec:
   hosts:
     - carrental
@@ -9,12 +9,12 @@ spec:
   - route:
     - destination:
         host: carrental
-        subset: v1
+        subset: v2
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: destination-v1
+  name: destination
 spec:
   hosts:
     - destination
@@ -22,12 +22,12 @@ spec:
   - route:
     - destination:
         host: destination
-        subset: v1
+        subset: v2
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: hotel-v1
+  name: hotel
 spec:
   hosts:
     - hotel
@@ -35,7 +35,7 @@ spec:
   - route:
     - destination:
         host: hotel
-        subset: v1
+        subset: v2
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService

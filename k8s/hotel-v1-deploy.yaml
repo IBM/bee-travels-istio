@@ -23,7 +23,7 @@ spec:
         version: v1
     spec:
       containers:
-      - image:  moficodes/hotel-v1:v1.0.0
+      - image: beetravels/hotel-v1:node-v1.0.2
         imagePullPolicy: Always
         ports:
         - containerPort: 9101
@@ -39,10 +39,10 @@ spec:
             value: info
         resources:
           limits:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 256Mi
           requests:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 256Mi
       restartPolicy: Always
       

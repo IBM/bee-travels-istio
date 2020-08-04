@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  carrental-v1
+  name: carrental-v1
   labels:
-    app:  carrental
+    app: carrental
     version: v1
 spec:
   replicas: 1
@@ -23,7 +23,7 @@ spec:
         version: v1
     spec:
       containers:
-      - image:  moficodes/car-rental-v1:v1.0.0
+      - image: beetravels/carrental-v1:node-v1.0.2
         imagePullPolicy: Always
         name: carrental
         ports:
@@ -39,10 +39,10 @@ spec:
             value: info
         resources:
           limits:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 256Mi
           requests:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 256Mi
       restartPolicy: Always
       

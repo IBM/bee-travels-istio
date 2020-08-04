@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  carrental-v3
+  name: carrental-v3
   labels:
-    app:  carrental
+    app: carrental
     version: v3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app:  carrental
+      app: carrental
       version: v3
   strategy:
     rollingUpdate:
@@ -19,15 +19,15 @@ spec:
   template:
     metadata:
       labels:
-        app:  carrental
+        app: carrental
         version: v3
     spec:
       containers:
-      - image:  beetravels/carrental-v2:node-03e4a69a09bdc56ca9676af9355fbf204b48db31
+      - image: beetravels/carrental-v2:node-v1.0.2
         imagePullPolicy: Always
         ports:
         - containerPort: 9102
-        name:  carrental
+        name: carrental
         env:
           - name: PORT
             value: "9102"
@@ -47,6 +47,8 @@ spec:
             value: postgres
           - name: PG_PASSWORD
             value: Oyg9YxwKmm
+          - name: SERVICE
+            value: car-rental-v3
           - name: DATABASE_CERT
             valueFrom:
               secretKeyRef:
@@ -54,10 +56,10 @@ spec:
                 key: dbsecret
         resources:
           limits:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 400Mi
           requests:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 400Mi
       restartPolicy: Always
       

@@ -20,7 +20,9 @@ When you have completed this code pattern, you will understand how to:
 * Generate load tests with [Artillery](https://artillery.io/docs/)
 
 <!--add an image in this path-->
-![architecture](readme_images/architecture.png)
+![architecture](readme_images/v1.jpeg)
+![architecture](readme_images/v2.jpeg)
+![architecture](readme_images/v3.jpeg)
 
 <!--Optionally, add flow steps based on the architecture diagram-->
 ## Flow
@@ -76,7 +78,7 @@ When you have completed this code pattern, you will understand how to:
 
 1. Clone the `bee-travels-istio` repository locally. In a terminal window, run:
    ```
-   $ git clone REPO_LINK
+   $ git clone https://github.com/IBM/bee-travels-istio.git
    ```
 
 ## 3. Deploy to Kubernetes
@@ -120,10 +122,9 @@ When you have completed this code pattern, you will understand how to:
    $ ./deploy-k8s-v2.sh
    ```
 
-<!-- DESCRIBE BETTER -->
-2. Expose the port for the MongoDB deployment so the data generator script can access it from outside the cluster.
+2. foo
    ```
-   $ kubectl expose deployment mongo --type=LoadBalancer --name=mongo-lb --port=27017
+   $ kubectl get node -o wide
    ```
 
 4. Note the `EXNTERNAL-IP` of the `mongo-lb` service.
@@ -145,7 +146,7 @@ When you have completed this code pattern, you will understand how to:
    Destination Data (Y/N): y
       Generate Destination Data (Y/N): n
       Database (mongodb/postgres/couchdb/cloudant): mongodb
-      Database Connection URL: mongodb://admin:admin@EXNTERNAL-IP:27017
+      Database Connection URL: mongodb://admin:admin@EXNTERNAL-IP:32508
       Use SSL/TLS (Y/N): n
    ```
 
@@ -188,9 +189,11 @@ When you have completed this code pattern, you will understand how to:
 7. Open `k8s/carrental-v3-deploy.yaml` in an editor. Set the value in line 41 to the URL from step 3 and replace `$USERNAME` with `admin` and `$PASSWORD` with the password  set in step 2. Repeat this step for `k8s/destination-v3-deploy.yaml` and `k8s/hotel-v3-deploy.yaml`.
 
 <!-- CONFIRM W MAX -->
-8. Open `k8s/mongo-secret.yaml` in an editor. Set the `dbsecret` in line 7 to the content of the TLS Certificate from step 4.
+8. Decode the contents of the TLS certificate from step 4 
 
-9. Deploy the appication with version 3 services.
+9. Open `k8s/mongo-secret.yaml` in an editor. Set the `dbsecret` in line 7 to the content of the TLS certificate from step 4.
+
+10. Deploy the appication with version 3 services.
    ```
    $ ./deploy-k8s-v3.sh
    ```
@@ -214,7 +217,7 @@ kubectl get svc
 
 1. Create an ingress gateway so the application is accessbile from outside the cluster.
    ```
-   $ kubectl apply -f k8s/networking/gateway.yaml
+   $ kubectl apply -f istio/gateway.yaml
    ```
 
 2. Access the application by navigating to the IP address defined in `EXTERNAL-IP` of the ingress gateway in the browser.
@@ -243,7 +246,7 @@ kubectl get svc
 
 1. Before we can set traffic rules, destination rules must to be defined for Istio to identify the service versions available in the application. These different versions are referred to as subsets.
    ```
-   $ kubectl apply -f k8s/networking/destinationrules.yaml
+   $ kubectl apply -f istio/destinationrules.yaml
    ```
 
 2. Confirm that the destination rules have been created.
@@ -254,7 +257,7 @@ kubectl get svc
 
 3. We will first route all traffic to the `v1` services by applying a set of virtual service rules. Virtual services route traffic to the defined configuration.
    ```
-   $ kubectl apply -f k8s/networking/virtualservice-v1.yaml
+   $ kubectl apply -f istio/virtualservice-all-v1.yaml
    ```
 
 4. Confirm that the `v1` virtual service rules have been applied.
@@ -275,12 +278,12 @@ kubectl get svc
 
 7. Remove the `v1` virtual service rules.
    ```
-   $ kubectl delete -f k8s/networking/virtualservice-v1.yaml
+   $ kubectl delete -f istio/virtualservice-all-v1.yaml
    ```
 
 8. We will now route all traffic to the `v2` services by applying a new set of virtual service rules.
    ```
-   $ kubectl apply -f k8s/networking/virtualservice-v2.yaml
+   $ kubectl apply -f istio/virtualservice-all-v2.yaml
    ```
 
 9. Confirm that the `v2` virtual service rules have been applied.
@@ -300,17 +303,17 @@ kubectl get svc
 
 12. Remove the `v2` virtual service rules. 
       ```
-      $ kubectl delete -f k8s/networking/virtualservice-v2.yaml
+      $ kubectl delete -f istio/virtualservice-all-v2.yaml
       ```
 
-13. Feel free to write and apply your own set of `v3` virtual service rules or try applying `k8s/networking/virtualservice-v3.yaml` on your own.
+13. Feel free to write and apply your own set of `v3` virtual service rules or try applying `istio/virtualservice-all-v3.yaml` on your own.
       > Remember to delete your virtual service rules before moving on.
 
 ### Shift traffic between multiple microservice versions
 
 1. We will first define virtual service rules to shift traffic evenly between `v1` and `v3` services. Traffic shifting is also referred to as weight-based routing and is helpful for A/B testing. 
    ```
-   $ kubectl apply -f k8s/networking/virtualservice-50.yaml
+   $ kubectl apply -f istio/virtualservice-weights.yaml
    ```
 
 2. Confirm that the virtual service rules have been applied.
@@ -330,12 +333,12 @@ kubectl get svc
 
 5. Remove the virtual service rules. 
    ```
-   $ kubectl delete -f k8s/networking/virtualservice-50.yaml
+   $ kubectl delete -f istio/virtualservice-weights.yaml
    ``` 
 
 6. We will now shift traffic to the `v1`, `v2`, and `v3` services at 10%, 30%, and 60%, respectively.
    ```
-   $ kubectl apply -f k8s/networking/virtualservice-all.yaml
+   $ kubectl apply -f istio/virtualservice-all.yaml
    ```
 
 7. Confirm that the virtual service rules have been applied.
@@ -355,7 +358,7 @@ kubectl get svc
 
 10. Remove the virtual service rules. 
       ```
-      $ kubectl delete -f k8s/networking/virtualservice-all.yaml
+      $ kubectl delete -f istio/virtualservice-all.yaml
       ``` 
 
 ### Access distributed trace spans through Jaeger
@@ -449,7 +452,7 @@ Envoy proxies can provide access information about the requests that the pod mak
 # Troubleshooting
 
 * Can I check if I have any issues with my Istio configuration?
-   * The `istioctl analyze --all-namespaces` command can detect possible issues within your cluster. You can also run the command against one or multiple configuration files to analyze the effect of applying them to your cluster: `istioctl analyze k8s/networking/new-virtualservices.yaml`
+   * The `istioctl analyze --all-namespaces` command can detect possible issues within your cluster. You can also run the command against one or multiple configuration files to analyze the effect of applying them to your cluster: `istioctl analyze istio/new-virtualservices.yaml`
 
 * I'm running a load test with Artillery but only the `bee-ui` service is receiving traffic on Grafana.
    * Check to see that the `target` value in `artillery_load/artillery.yaml` does not have an extra `/` at the end of the address. (ex: "http://169.62.94.60")

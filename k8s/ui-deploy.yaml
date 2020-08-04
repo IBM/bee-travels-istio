@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  bee-ui
+  name: bee-ui
   labels:
-    app:  bee-ui
+    app: bee-ui
     version: v1
 spec:
   replicas: 1
@@ -18,11 +18,11 @@ spec:
   template:
     metadata:
       labels:
-        app:  bee-ui
+        app: bee-ui
         version: v1
     spec:
       containers:
-      - image:  moficodes/bee-ui:v1.0.0
+      - image: beetravels/ui:node-v1.0.2
         imagePullPolicy: Always
         name:  bee-ui
         env:

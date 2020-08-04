@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  hotel-v2
+  name: hotel-v2
   labels:
-    app:  hotel
+    app: hotel
     version: v2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app:  hotel
+      app: hotel
       version: v2
   strategy:
     rollingUpdate:
@@ -19,15 +19,15 @@ spec:
   template:
     metadata:
       labels:
-        app:  hotel
+        app: hotel
         version: v2
     spec:
       containers:
-      - image:  beetravels/hotel-v2:node-03e4a69a09bdc56ca9676af9355fbf204b48db31
+      - image: beetravels/hotel-v2:node-v1.0.2
         imagePullPolicy: Always
         ports:
         - containerPort: 9101
-        name:  hotel
+        name: hotel
         env:
           - name: PORT
             value: "9101"
@@ -49,10 +49,10 @@ spec:
             value: Oyg9YxwKmm
         resources:
           limits:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 256Mi
           requests:
-            cpu: 500m
-            memory: 1024Mi
+            cpu: 200m
+            memory: 256Mi
       restartPolicy: Always
       

@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  currencyexchange
+  name: currencyexchange
   labels:
-    app:  currencyexchange
+    app: currencyexchange
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app:  currencyexchange
+      app: currencyexchange
       version: v1
   strategy:
     rollingUpdate:
@@ -19,11 +19,11 @@ spec:
   template:
     metadata:
       labels:
-        app:  currencyexchange
+        app: currencyexchange
         version: v1
     spec:
       containers:
-      - image:  beetravels/currencyexchange:node-03e4a69a09bdc56ca9676af9355fbf204b48db31
+      - image: beetravels/currencyexchange:node-v1.0.2
         imagePullPolicy: Always
         name: currencyexchange
         env:
