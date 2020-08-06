@@ -114,20 +114,21 @@ When you have completed this code pattern, you will understand how to:
    ```
 
 ### Deploy version 2 (data stored in an in-cluster database)
-> The following outlines specific steps to connect to an in-cluster MongoDB database, but the Bee Travels application also supports PostgreSQL, ClouchDB, and Cloudant.
+> The following outlines specific steps to connect to an in-cluster MongoDB database, but the Bee Travels application also supports PostgreSQL, CouchDB, and Cloudant.
 
-1. Deploy the appication with version 2 services.
+1. Deploy the application with version 2 services.
    ```
    $ ./deploy-k8s-v2.sh
    ```
 
-2. We have created a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) for MongoDB which exposes the service outside the cluster at `<NodeIP>:<NodePort>` Node the node port (second port number) of the `mongo` service.
-   > ![nodeport](readme_images/nodeport.png)
+2. We have created a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) for MongoDB which exposes the service outside the cluster at `<NodeIP>:<NodePort>`. Take not of the node port (second port number) of the `mongo` service.
+   > For example: 
+   ![nodeport](readme_images/nodeport.png)
    ```
    $ kubectl get svc mongo-lb
    ```
 
-3. Note the `EXTERNAL-IP` of any of the nodes in the cluster. This is the `<NodeIP>` we will use to connect to the MongoDB service as described in step 2.
+3. Take not of `EXTERNAL-IP` of any of the nodes in the cluster. This is the `<NodeIP>` we will use to connect to the MongoDB service as described in step 2.
    ```
    $ kubectl get node -o wide
    ```
@@ -150,7 +151,7 @@ When you have completed this code pattern, you will understand how to:
    ```
 
 ### Deploy version 3 (data stored in a database in the cloud)
-> The following outlines specific steps to connect to a MongoDB database in the cloud, but the Bee Travels application also supports PostgreSQL, ClouchDB, and Cloudant.
+> The following outlines specific steps to connect to a MongoDB database in the cloud, but the Bee Travels application also supports PostgreSQL, CouchDB, and Cloudant.
 
 1. [Provision a MongoDB deployment in the cloud.](https://cloud.ibm.com/catalog/services/databases-for-mongodb)
 
@@ -184,14 +185,14 @@ When you have completed this code pattern, you will understand how to:
 
 7. Open `k8s/carrental-v3-deploy.yaml` in an editor. Set the value in line 41 to the URL from step 3 and replace `$USERNAME` with `admin` and `$PASSWORD` with the password set in step 2. At the end of your URL, add `&tls=true`. Repeat this step for `k8s/destination-v3-deploy.yaml` and `k8s/hotel-v3-deploy.yaml`.
 
-8. Open the TLS certificate from step 4 and copy its contents **excluding the first and last lines in dashes**. Encode the content by running the following command and note the output:
+8. Open the TLS certificate from step 4 and copy its contents **excluding the first and last lines in dashes**. Encode the content by running the following command and take note of the output:
    ```
    $ echo <TLS_cert> | base64
    ```
 
 9. Open `k8s/mongo-secret.yaml` in an editor. Set the `dbsecret` in line 7 to the encoded value in step 8.
 
-10. Deploy the appication with version 3 services.
+10. Deploy the application with version 3 services.
    ```
    $ ./deploy-k8s-v3.sh
    ```
@@ -211,7 +212,7 @@ kubectl get svc
 
 ### Access the application (ingress gateway)
 
-1. Create an ingress gateway so the application is accessbile from outside the cluster.
+1. Create an ingress gateway so the application is accessibile from outside the cluster.
    ```
    $ kubectl apply -f istio/gateway.yaml
    ```
@@ -235,7 +236,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
    $ kubectl apply -f istio/destinationrules.yaml
    ```
 
-2. Confirm that the destination rules have been created. Note the *subset* field for each service.  
+2. Confirm that the destination rules have been created. Notice the *subset* field for each service.  
    ```
    $ kubectl get dr -o yaml
    ```
@@ -250,7 +251,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
    $ kubectl apply -f istio/virtualservice-all-v1.yaml
    ```
 
-6. Confirm that the `v1` virtual service rules have been applied. Note the *subset* value for each service's destination is set to `v1`.
+6. Confirm that the `v1` virtual service rules have been applied. Notice the *subset* value for each service's destination is set to `v1`.
    ```
    $ kubectl get vs -o yaml
    ```
@@ -263,7 +264,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
    $ kubectl apply -f istio/virtualservice-all-v2.yaml
    ```
 
-9. Confirm that the `v2` virtual service rules have been applied. Note the *subset* value for each service's destination is set to `v2`.
+9. Confirm that the `v2` virtual service rules have been applied. Notice the *subset* value for each service's destination is set to `v2`.
    ```
    $ kubectl get vs -o yaml
    ```
@@ -290,7 +291,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
    $ kubectl apply -f istio/virtualservice-weights.yaml
    ```
 
-5. Confirm that the virtual service rules have been applied. Note the *weight* value for the two `v1` and `v3` destinations of each service is set to `50`.
+5. Confirm that the virtual service rules have been applied. Notice the *weight* value for the two `v1` and `v3` destinations of each service is set to `50`.
    ```
    $ kubectl get vs -o yaml
    ```
@@ -302,7 +303,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
    $ artillery run artillery_load/artillery.yaml
    ```
 
-7. Navigate to the Kiali dashboard. Note how traffic is split approximately evenly between `v1` and `v3` services.
+7. Navigate to the Kiali dashboard. Notice how traffic is split approximately 50-50 between `v1` and `v3` services.
 ![kiali-50](readme_images/kiali-50.gif) 
 
 8. We will now shift traffic to the `v1`, `v2`, and `v3` services at 10%, 30%, and 60%, respectively.
@@ -310,7 +311,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
    $ kubectl apply -f istio/virtualservice-weights.yaml
    ```
 
-9. Confirm that the virtual service rules have been applied. Note the *weight* value for the `v1`, `v2`, `v3` destinations of each service are set to `10`, `30`, and `60`.
+9. Confirm that the virtual service rules have been applied. Notice the *weight* value for the `v1`, `v2`, `v3` destinations of each service are set to `10`, `30`, and `60`.
    ```
    $ kubectl get vs -o yaml
    ```
@@ -321,9 +322,8 @@ Before we begin the configurations, we will set up Artillery, an external load g
    $ artillery run artillery_load/artillery.yaml
    ```
 
-11. Navigate to the Kiali dashboard. Note how traffic is split between `v1`, `v2`, and `v3` services at around 10%, 30%, and 60% respectively.
+11. Navigate to the Kiali dashboard. Notice how traffic is split approximately 10-30-60 between the `v1`, `v2`, and `v3` services.
 ![kiali-weights](readme_images/kiali-weights.gif)
-
 
 ### Access distributed trace spans through Jaeger
 
@@ -345,7 +345,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
 
 ### Analyze service traffic and latency through Grafana
 
-[Grafana](https://grafana.com/grafana/) is a monitoring platform that proivdes details about the service mesh through a variety of dashboards:
+[Grafana](https://grafana.com/grafana/) is a monitoring platform that provides details about the service mesh through a variety of dashboards:
 
 * Mesh Dashboard provides an overview of all services in the mesh.
 * Service Dashboard provides a detailed breakdown of metrics for a service.
@@ -372,7 +372,7 @@ For this code pattern, we will focus on the Mesh Dashboard for traffic and laten
    $ artillery run artillery_load/artillery.yaml
    ```
 
-3. The Mesh Dashboard provides information about the number of requests the services receive and their latency. The `Requests` column depicts how many requests are coming in per second. The `P50 Latency` describes the average time taken to complete requests, `P90 Latency` describes the time taken for the slowest 10% of requests, and `P99 Latency` describes the time taken for the slowest 1% of requests. Comparing the latency between the different versions, we can swee that across all the services, `v1` is the fastest, followed by `v2`, and `v3` is the slowest.
+3. The Mesh Dashboard provides information about the number of requests the services receive and their latency. The `Requests` column depicts how many requests are coming in per second. The `P50 Latency` describes the average time taken to complete requests, `P90 Latency` describes the time taken for the slowest 10% of requests, and `P99 Latency` describes the time taken for the slowest 1% of requests. Comparing the latency between the different versions, we can see that across all the services, `v1` is the fastest, followed by `v2`, and `v3` is the slowest.
    ![grafana-latency](readme_images/grafana-latency.png)
 
 ### Visualize the service mesh through Kiali
@@ -405,7 +405,7 @@ Envoy proxies can provide access information about the requests that the pod mak
    $ kubectl delete po --all
    ```
 
-3. Display a list of all of the pods and note the name of the bee-ui pod. Use the pod name to start the access logs for the `bee-ui` pod's Envoy proxy. 
+3. Display a list of all of the pods and take note of the bee-ui pod name. Use the pod name to start the access logs for the `bee-ui` pod's Envoy proxy. 
    ```
    $ kubectl get po
    $ kubectl logs -f <bee-ui-pod-name> istio-proxy
