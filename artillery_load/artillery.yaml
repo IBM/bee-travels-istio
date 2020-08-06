@@ -1,23 +1,22 @@
 config:
-  # target: "http://EXTERNAL-IP"
-  target: "http://169.62.94.60"
+  # target: "http://<EXTERNAL-IP>"
   phases:
-    - duration: 60
-      arrivalRate: 15
+    - duration: 10
+      arrivalRate: 10
   processor: "./artillery.js"
 scenarios:
   - name: "destination"
     flow:
-    - function: "getDestination"
+    - function: "getData"
     - get:
         url: "/api/v1/destinations/{{ country }}/{{ city }}"
   - name: "hotel"
     flow:
-    - function: "getDestination"
+    - function: "getData"
     - get:
-        url: "/api/v1/hotels/{{ country }}/{{ city }}?dateFrom=2020-08-23&dateTo=2020-08-25"
+        url: "/api/v1/hotels/{{ country }}/{{ city }}?dateFrom={{ fromYear }}-{{ fromMonth}}-{{ fromDay }}&dateTo={{ toYear }}-{{ toMonth}}-{{ toDay}}"
   - name: "carrental"
     flow:
-    - function: "getDestination"
+    - function: "getData"
     - get:
-        url: "/api/v1/cars/{{ country }}/{{ city }}?dateFrom=2020-08-23&dateTo=2020-08-25"
+        url: "/api/v1/cars/{{ country }}/{{ city }}?dateFrom={{ fromYear }}-{{ fromMonth}}-{{ fromDay }}&dateTo={{ toYear }}-{{ toMonth}}-{{ toDay }}"
