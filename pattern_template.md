@@ -12,7 +12,7 @@ Build a Service Mesh for Microservices in the Cloud
 
 > Expand on the short title, focusing on open source or generic tools and programs. Include IBM product names only if that product is required in the pattern and cannot be substituted.
 
-Building an Istio 1.6 Service Mesh for Bee Travels, a Microservice Application Deployed on Kubernetes
+Building an Istio 1.6 Service Mesh for Bee Travels, a Microservices Based Application Deployed on Kubernetes
 
 # Author
 
@@ -26,7 +26,7 @@ Building an Istio 1.6 Service Mesh for Bee Travels, a Microservice Application D
 
 > "Get the code": Provide the link to GitHub repo for the code.
 
-* GitHub URL
+* https://github.com/IBM/bee-travels-istio.git
 
 # Summary
 
@@ -106,13 +106,6 @@ Currently, there are 2 version of the destination, hotel, and carrental services
 
 > List any IBM Developer resources that are closely related to this pattern, such as other patterns, blog posts, tutorials, etc..
 
-* [title](url): description
-* [title](url): description
-
-# Related links
-
-> Provide any non-IBM Developer resources that you need to link to that are NOT components or services
-
-* [title](url): description
-* [title](url): description
+* [Intro to Istio](https://developer.ibm.com/videos/intro-to-istio-webcast/)
+* [Deep dive into Istio](https://developer.ibm.com/videos/deep-dive-into-istio/)
 

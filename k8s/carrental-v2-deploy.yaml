@@ -38,7 +38,7 @@ spec:
           - name: DATABASE
             value: mongodb
           - name: MONGO_CONNECTION_URL
-            value: mongodb://admin:admin@mongo-lb:27017
+            value: mongodb://admin:admin@mongo:27017
           - name: COUCH_CLOUDANT_CONNECTION_URL
             value: http://admin:admin@couch:5984
           - name: PG_HOST
