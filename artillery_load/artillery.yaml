@@ -1,5 +1,5 @@
 config:
-  # target: "http://<EXTERNAL-IP>"
+  target: "http://<EXTERNAL-IP>"
   phases:
     - duration: 10
       arrivalRate: 10
