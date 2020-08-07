@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: carrental
+  labels:
+    app: carrental
+spec:
+  selector:
+    app: carrental
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    name: http
+    targetPort: 9102

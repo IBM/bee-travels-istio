@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  hotel-v3
+  labels:
+    app: hotel
+    version: v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  hotel
+      version: v3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  hotel
+        version: v3
+    spec:
+      containers:
+      - image: beetravels/hotel-v2:node-v1.0.2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9101
+        name: hotel
+        env:
+          - name: PORT
+            value: "9101"
+          - name: HOST_IP
+            value: hotel
+          - name: SCHEME
+            value: http
+          - name: DATABASE
+            value: mongodb
+          - name: MONGO_CONNECTION_URL
+            value: <YOUR URL HERE>
+          - name: SERVICE
+            value: hotel-v3
+          - name: DATABASE_CERT
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: dbsecret
+        resources:
+          limits:
+            cpu: 200m
+            memory: 400Mi
+          requests:
+            cpu: 200m
+            memory: 400Mi
+      restartPolicy: Always
+      

@@ -1,0 +1,22 @@
+config:
+  target: "http://<EXTERNAL-IP>"
+  phases:
+    - duration: 10
+      arrivalRate: 10
+  processor: "./artillery.js"
+scenarios:
+  - name: "destination"
+    flow:
+    - function: "getData"
+    - get:
+        url: "/api/v1/destinations/{{ country }}/{{ city }}"
+  - name: "hotel"
+    flow:
+    - function: "getData"
+    - get:
+        url: "/api/v1/hotels/{{ country }}/{{ city }}?dateFrom={{ fromYear }}-{{ fromMonth}}-{{ fromDay }}&dateTo={{ toYear }}-{{ toMonth}}-{{ toDay}}"
+  - name: "carrental"
+    flow:
+    - function: "getData"
+    - get:
+        url: "/api/v1/cars/{{ country }}/{{ city }}?dateFrom={{ fromYear }}-{{ fromMonth}}-{{ fromDay }}&dateTo={{ toYear }}-{{ toMonth}}-{{ toDay }}"

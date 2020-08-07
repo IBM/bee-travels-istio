@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hotel
+  labels:
+    app: hotel
+spec:
+  selector:
+    app: hotel
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    name: http
+    targetPort: 9101

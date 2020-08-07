@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  bee-ui
+  labels:
+    app: bee-ui
+spec:
+  selector:
+    app:  bee-ui
+  type:  NodePort
+  ports:
+  - port: 80
+    protocol: TCP
+    name: http
+    targetPort:  9000
