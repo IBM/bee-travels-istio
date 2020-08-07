@@ -39,14 +39,6 @@ spec:
             value: mongodb
           - name: MONGO_CONNECTION_URL
             value: mongodb://admin:admin@mongo:27017
-          - name: COUCH_CLOUDANT_CONNECTION_URL
-            value: http://admin:admin@couch:5984
-          - name: PG_HOST
-            value: bee-travels-db-postgresql
-          - name: PG_USER
-            value: postgres
-          - name: PG_PASSWORD
-            value: Oyg9YxwKmm
         resources:
           limits:
             cpu: 200m

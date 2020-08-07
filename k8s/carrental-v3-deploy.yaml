@@ -38,15 +38,7 @@ spec:
           - name: DATABASE
             value: mongodb
           - name: MONGO_CONNECTION_URL
-            value: mongodb://admin:adminadmin1@059d7ac6-942a-4f24-b2c4-9fd7d0b94865-0.4b2136ddd30a46e9b7bdb2b2db7f8cd0.databases.appdomain.cloud:31653,059d7ac6-942a-4f24-b2c4-9fd7d0b94865-1.4b2136ddd30a46e9b7bdb2b2db7f8cd0.databases.appdomain.cloud:31653/ibmclouddb?authSource=admin&replicaSet=replset&tls=true
-          - name: COUCH_CLOUDANT_CONNECTION_URL
-            value: http://admin:admin@couch:5984
-          - name: PG_HOST
-            value: bee-travels-db-postgresql
-          - name: PG_USER
-            value: postgres
-          - name: PG_PASSWORD
-            value: Oyg9YxwKmm
+            value: <YOUR URL HERE>
           - name: SERVICE
             value: car-rental-v3
           - name: DATABASE_CERT

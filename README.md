@@ -125,7 +125,7 @@ When you have completed this code pattern, you will understand how to:
    > For example: 
    ![nodeport](readme_images/nodeport.png)
    ```
-   $ kubectl get svc mongo-lb
+   $ kubectl get svc mongo
    ```
 
 3. Take not of `EXTERNAL-IP` of any of the nodes in the cluster. This is the `<NodeIP>` we will use to connect to the MongoDB service as described in step 2.
@@ -183,7 +183,7 @@ When you have completed this code pattern, you will understand how to:
       Certificate File Path:
    ```
 
-7. Open `k8s/carrental-v3-deploy.yaml` in an editor. Set the value in line 41 to the URL from step 3 and replace `$USERNAME` with `admin` and `$PASSWORD` with the password set in step 2. At the end of your URL, add `&tls=true`. Repeat this step for `k8s/destination-v3-deploy.yaml` and `k8s/hotel-v3-deploy.yaml`.
+7. Open `k8s/carrental-v3-deploy.yaml` in an editor. Replace `<YOUR URL HERE>` in line 41 to the URL from step 3 and replace `$USERNAME` with `admin` and `$PASSWORD` with the password set in step 2. At the end of your URL, add `&tls=true`. Repeat this step for `k8s/destination-v3-deploy.yaml` and `k8s/hotel-v3-deploy.yaml`.
 
 8. Open the TLS certificate from step 4 and copy its contents **excluding the first and last lines in dashes**. Encode the content by running the following command and take note of the output:
    ```
