@@ -41,7 +41,7 @@ When you have completed this code pattern, you will understand how to:
 # Steps
 
 1. [Complete the IBM Cloud set-up for Kubernetes and Istio](#1.-Complete-the-IBM-Cloud-set-up-for-Kubernetes-and-Istio)
-2. [Clone the repositories](#2.-Clone-the-repositories)
+2. [Clone the repository](#2.-Clone-the-repository)
 3. [Deploy the application to Kubernetes](#3.-Deploy-to-Kubernetes)
    * Deploy version 1 (data stored in json flat files)
    * Deploy version 2 (data stored in an in-cluster database)
@@ -73,9 +73,9 @@ When you have completed this code pattern, you will understand how to:
    > Your configmap should look like this:
 ![configmap](readme_images/configmap.png)
 
-## 2. Clone the repositories
+## 2. Clone the repository
 
-1. Clone the `bee-travels-istio` repository locally. In a terminal window, run:
+Clone the `bee-travels-istio` repository locally. In a terminal window, run:
    ```
    $ git clone https://github.com/IBM/bee-travels-istio.git
    ```
@@ -169,7 +169,7 @@ When you have completed this code pattern, you will understand how to:
    $ ./generate.sh
    ```
 
-6. Answer the prompts as seen below. For the **Database Connection URL**, input the endpoint from Step 3 and replace `$USERNAME` with `admin` and `$PASSWORD` with the password  set in step 2. For the **Certificate File Path**, input the path to the TLS certificate downloaded in step 4. Use existing credentials when prompted for hotel and car rental data.
+6. Answer the prompts as seen below. For the **Database Connection URL**, input the endpoint from Step 3 and replace `$USERNAME` with `admin` and `$PASSWORD` with the password set in step 2. For the **Certificate File Path**, input the path to the TLS certificate downloaded in step 4. Use existing credentials when prompted for hotel and car rental data.
    > NOTE: This code pattern will not use the flight service.
    ```
    Welcome to the Bee Travels Data Generating Script
@@ -190,7 +190,7 @@ When you have completed this code pattern, you will understand how to:
    $ echo <TLS_cert> | base64
    ```
 
-9. Open `k8s/mongo-secret.yaml` in an editor. Set the `dbsecret` in line 7 to the encoded value in step 8.
+9. Open `k8s/mongo-secret.yaml` in an editor. Set the `dbsecret` in line 7 to the encoded TLS certificate value from step 8.
 
 10. Deploy the application with version 3 services.
    ```
@@ -256,7 +256,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
    $ kubectl get vs -o yaml
    ```
 
-7. Use Bee Travel's service graph to confirm that all traffic is being sent to the version 1 services. 
+7. Use Bee Travel's service graph to confirm that all traffic is being sent to the `v1` services. 
 ![v1](readme_images/v1.png)
 
 8. We will now route all traffic to the `v2` services by applying a new set of virtual service rules.
@@ -269,7 +269,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
    $ kubectl get vs -o yaml
    ```
 
-10. Use Bee Travel's service graph to confirm that all traffic is being sent to the version 1 services. 
+10. Use Bee Travel's service graph to confirm that all traffic is being sent to the `v2` services. 
 ![v2](readme_images/v2.png)
 
 11. Feel free to write and apply your own set of `v3` virtual service rules or try applying `istio/virtualservice-all-v3.yaml` on your own.
@@ -425,7 +425,7 @@ Envoy proxies can provide access information about the requests that the pod mak
    * Check to see that the `target` value in `artillery_load/artillery.yaml` does not have an extra `/` at the end of the address. (ex: "http://169.62.94.60")
 
 * I'm getting a lot of 500 Internal Service Errors when generating traffic with Artillery or in the browser. 
-   * Your deployments' resource limits may be being reached. Try running `watch -n1 kubectl top po`. This command will update and display the resource metrics for each pod every second. While this is running, generate traffic to see if any of the pods are exceeding the resource limits set in their respective deployment files. 
+   * Your deployments' resource limits may be being reached. Try running `watch -n1 kubectl top po` which displays the resource metrics for each pod updated every second. While this is running, generate traffic to the application to see if any of the pods are exceeding the resource limits set in their respective deployment files. 
 
 ## License
 
