@@ -213,7 +213,7 @@ kubectl get svc
       $ kubectl get svc -n istio-system istio-ingressgateway
       ```
 
-## Configure the Istio service mesh
+## 4. Configure the Istio service mesh
 
 Before we begin the configurations, we will set up Artillery, an external load generator tool. We will be using Artillery to generate traffic to the Bee Travels application. Please make sure that it is installed by following the links in the [Prerequisites](#-Prerequisites) section. 
 
