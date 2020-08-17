@@ -1,7 +1,3 @@
-<!-- Put badges at the very top -->
-<!-- Change the repo -->
-[![Build Status](https://travis-ci.org/IBM/watson-banking-chatbot.svg?branch=master)](https://travis-ci.org/IBM/watson-banking-chatbot)
-
 # Building an Istio 1.6 Service Mesh for Bee Travels, a Microservices Based Application Deployed on Kubernetes
 
 In this code pattern, we will deploy a microservices based application to  IBM Kubernetes Service and create a service mesh with Istio 1.6. 
@@ -19,18 +15,11 @@ When you have completed this code pattern, you will understand how to:
   * View access logs 
 * Generate load tests with [Artillery](https://artillery.io/docs/)
 
-<!--add an image in this path-->
+# Architecture
+
 ![architecture](readme_images/arch-v1.jpeg)
 ![architecture](readme_images/arch-v2.jpeg)
 ![architecture](readme_images/arch-v3.jpeg)
-
-## Flow
-
-1. Step 1.
-2. Step 2.
-3. Step 3.
-4. Step 4.
-5. Step 5.
 
 # Prerequisites
 
@@ -40,14 +29,14 @@ When you have completed this code pattern, you will understand how to:
 
 # Steps
 
-1. [Complete the IBM Cloud set-up for Kubernetes and Istio](#1.-Complete-the-IBM-Cloud-set-up-for-Kubernetes-and-Istio)
-2. [Clone the repository](#2.-Clone-the-repository)
-3. [Deploy the application to Kubernetes](#3.-Deploy-to-Kubernetes)
+1. [Complete the IBM Cloud set-up for Kubernetes and Istio](#1-Complete-the-IBM-Cloud-set-up-for-Kubernetes-and-Istio)
+2. [Clone the repository](#2-Clone-the-repository)
+3. [Deploy the application to Kubernetes](#3-Deploy-to-Kubernetes)
    * Deploy version 1 (data stored in json flat files)
    * Deploy version 2 (data stored in an in-cluster database)
    * Deploy version 3 (data stored in a database in the cloud)
    * Access the application (ingress gateway)
-4. [Configure the Istio service mesh](#4.-Configure-the-Istio-service-mesh)
+4. [Configure the Istio service mesh](#4-Configure-the-Istio-service-mesh)
    * Route traffic to specific microservice versions
    * Shift traffic between multiple microservice versions
    * Access distributed trace spans through Jaeger
@@ -67,7 +56,10 @@ When you have completed this code pattern, you will understand how to:
 4. When your cluster has been created, navigate to the **Add-ons** panel on the left side of your cluster console. Click **Install** for the Managed Istio Add-on.
 ![istio_addon](readme_images/cluster_addon_console.png)
 
-5. After Istio has finished installing, [install the `istioctl` CLI.](https://cloud.ibm.com/docs/containers?topic=containers-istio#istioctl)
+5. After Istio has finished installing, install the [`istioctl` CLI](https://istio.io/latest/docs/reference/commands/istioctl/) by running the following:
+   ```
+   $ curl -sL https://istio.io/downloadIstioctl | sh -
+   ```
 
 6. [Customize your Istio installation](https://cloud.ibm.com/docs/containers?topic=containers-istio#customize) by following steps 1 through 4 to enable monitoring and increase trace sampling to 100.
    > Your configmap should look like this:
@@ -121,14 +113,14 @@ Clone the `bee-travels-istio` repository locally. In a terminal window, run:
    $ ./deploy-k8s-v2.sh
    ```
 
-2. We have created a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) for MongoDB which exposes the service outside the cluster at `<NodeIP>:<NodePort>`. Take not of the node port (second port number) of the `mongo` service.
+2. We have created a [NodePort](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) for MongoDB which exposes the service outside the cluster at `<NODE-IP>:<NODE-PORT>`. Take not of the node port (second port number) of the `mongo` service.
    > For example: 
    ![nodeport](readme_images/nodeport.png)
    ```
    $ kubectl get svc mongo
    ```
 
-3. Take not of `EXTERNAL-IP` of any of the nodes in the cluster. This is the `<NodeIP>` we will use to connect to the MongoDB service as described in step 2.
+3. Take not of `EXTERNAL-IP` of any of the nodes in the cluster. This is the `<NODE-IP>` we will use to connect to the MongoDB service as described in step 2.
    ```
    $ kubectl get node -o wide
    ```
@@ -138,7 +130,7 @@ Clone the `bee-travels-istio` repository locally. In a terminal window, run:
    $ ./generate.sh
    ```
 
-5. Answer the prompts as seen below. For the **Database Connection URL**, replace `<NODE-IP>` with the IP address from step 4 and `<NODE-PORT>` from step 3. Use existing credentials when prompted for hotel and car rental data.
+5. Answer the prompts as seen below. For the **Database Connection URL**, replace `<NODE-IP>` with the IP address from step 3 and `<NODE-PORT>` from step 2. Use existing credentials when prompted for hotel and car rental data.
    ```
    Welcome to the Bee Travels Data Generating Script
    Please answer the following options to configure your data:
@@ -170,7 +162,6 @@ Clone the `bee-travels-istio` repository locally. In a terminal window, run:
    ```
 
 6. Answer the prompts as seen below. For the **Database Connection URL**, input the endpoint from Step 3 and replace `$USERNAME` with `admin` and `$PASSWORD` with the password set in step 2. For the **Certificate File Path**, input the path to the TLS certificate downloaded in step 4. Use existing credentials when prompted for hotel and car rental data.
-   > NOTE: This code pattern will not use the flight service.
    ```
    Welcome to the Bee Travels Data Generating Script
    Please answer the following options to configure your data:
@@ -187,7 +178,7 @@ Clone the `bee-travels-istio` repository locally. In a terminal window, run:
 
 8. Open the TLS certificate from step 4 and copy its contents **excluding the first and last lines in dashes**. Encode the content by running the following command and take note of the output:
    ```
-   $ echo <TLS_cert> | base64
+   $ echo $(cat <TLS_cert>) | base64
    ```
 
 9. Open `k8s/mongo-secret.yaml` in an editor. Set the `dbsecret` in line 7 to the encoded TLS certificate value from step 8.
@@ -288,7 +279,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
 
 4. We will first define virtual service rules to shift traffic evenly between `v1` and `v3` services. Traffic shifting is also referred to as weight-based routing and is helpful for A/B testing. 
    ```
-   $ kubectl apply -f istio/virtualservice-weights.yaml
+   $ kubectl apply -f istio/virtualservice-50-v1-v3.yaml
    ```
 
 5. Confirm that the virtual service rules have been applied. Notice the *weight* value for the two `v1` and `v3` destinations of each service is set to `50`.
@@ -416,6 +407,9 @@ Envoy proxies can provide access information about the requests that the pod mak
 ![logs](readme_images/logs.png)
 
 # Troubleshooting
+
+* Installing Artillery globally as root fails with permission error
+   * As suggested [here](https://github.com/artilleryio/artillery/issues/714), try installing Artillery by running `npm install -g artillery --allow-root --unsafe-perm=true`
 
 * Can I check if I have any issues with my Istio configuration?
    * The `istioctl analyze` command can detect possible issues within your cluster. You can also run the command against one or multiple configuration files to analyze the effect of applying them to your cluster. For example: `istioctl analyze istio/ex-virtualservice.yaml`
