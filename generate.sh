@@ -181,42 +181,4 @@ if [ "$wantsCarData" = "Y" ] || [ "$wantsCarData" = "y" ]; then
 fi
 
 echo ""
-echo "WARNING: Flight Data might take a long time to upload"
-read -p "Flight Data (Y/N): " wantsFlightData
-if [ "$wantsFlightData" = "Y" ] || [ "$wantsFlightData" = "y" ]; then
-	read -p "  Generate Flight Data (Y/N): " wantsGenerateFlightData
-	if [ "$wantsGenerateFlightData" = "Y" ] || [ "$wantsGenerateFlightData" = "y" ]; then
-		generateFlightData=true
-	else
-		generateFlightData=false
-	fi
-	read -p "  Database (mongodb/postgres/couchdb/cloudant): " flightDatabase
-	if [ "$flightDatabase" = "mongodb" ]; then
-		mongoCreds
-		echo ""
-		echo "Starting Flight data process"
-		if [ "$mongoCertificate" ]; then
-			docker run --net host -e GENERATE_DATA=$generateFlightData -e DATABASE=mongodb -e DATABASE_CERT="$mongoCertificate" -e MONGO_CONNECTION_URL=$mongoURL beetravels/data-gen-airports:$dockerTag
-		else
-			docker run --net host -e GENERATE_DATA=$generateFlightData -e DATABASE=mongodb -e MONGO_CONNECTION_URL=$mongoURL beetravels/data-gen-airports:$dockerTag
-		fi
-	elif [ "$flightDatabase" = "postgres" ]; then
-		postgresCreds
-		echo ""
-		echo "Starting Flight data process"
-		if [ "$postgresCertificate" ]; then
-			docker run --net host -e GENERATE_DATA=$generateFlightData -e DATABASE=postgres -e DATABASE_CERT="$postgresCertificate" -e PG_HOST=$postgresHost -e PG_PORT=$postgresPort -e PG_USER=$postgresUser -e PG_PASSWORD=$postgresPassword -e PG_DB=$postgresDB beetravels/data-gen-airports:$dockerTag
-		else
-			docker run --net host -e GENERATE_DATA=$generateFlightData -e DATABASE=postgres -e PG_HOST=$postgresHost -e PG_PORT=$postgresPort -e PG_USER=$postgresUser -e PG_PASSWORD=$postgresPassword beetravels/data-gen-airports:$dockerTag
-		fi
-	elif [ "$flightDatabase" = "couchdb" ] || [ "$flightDatabase" = "cloudant" ]; then
-		couchCreds
-		echo ""
-		echo "Starting Flight data process"
-		docker run --net host -e GENERATE_DATA=$generateFlightData -e DATABASE=couchdb -e COUCH_CONNECTION_URL=$couchURL beetravels/data-gen-airports:$dockerTag
-	fi
-	echo "Flight data process complete"
-fi
-
-echo ""
 echo "Data generation process complete"
