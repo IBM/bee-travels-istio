@@ -267,7 +267,7 @@ Before we begin the configurations, we will set up Artillery, an external load g
 
 ### Shift traffic between multiple microservice versions
 
-1. We will be using the Kiali dashboard to visualize traffic shifting. [Set up your Kiali credentials with a secret.](https://istio.io/latest/docs/tasks/observability/kiali/#create-a-secret)
+1. We will be using the Kiali dashboard to visualize traffic shifting. [Set up your Kiali credentials with a secret.](https://cloud.ibm.com/docs/containers?topic=containers-istio-health#kiali)
 
 2. Access the Kiali dashboard by running the following command. The dashboard should launch in a browser window automatically, but if it does not, navigate to `localhost:55619/kiali`. You will need to log in with the credentials created in step 1.
    ```
