@@ -1,3 +1,7 @@
+# WARNING: This repository is no longer maintained :warning:
+
+> This repository will not be updated. The repository will be kept available in read-only mode.
+
 # Building an Istio 1.6 Service Mesh for Bee Travels, a Microservices Based Application Deployed on Kubernetes
 
 In this code pattern, we will deploy a microservices based application to  IBM Kubernetes Service and create a service mesh with Istio 1.6. 
